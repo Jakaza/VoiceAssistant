@@ -3,7 +3,7 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 
 SAMPLE_RATE = 16000 # 16kHz
-DURATION = 2 # Seconds
+DURATION = 3 # Seconds
 
 def record_commands(label, index):
     print(f"Recording '{label}' sample #{index}...")

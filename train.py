@@ -6,6 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from joblib import dump
 from features import extract_features
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
 
 AUDIO_DIR = "audio/"
 MODEL_PATH = "model.joblib"
@@ -37,13 +39,16 @@ def train_model():
 
     X_train, X_test, y_train, y_test = train_test_split(x, y_encoded,test_size=0.2)
 
-    clf = SVC(kernel="linear", probability=True )
+    clf = RandomForestClassifier(n_estimators=100)
+    # clf = SVC(kernel="linear", probability=True )
     clf.fit(X_train,y_train)
 
     y_pred = clf.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
 
     print(f"Model trained with accuracy: {acc:.2f}")
+
+    print(classification_report(y_test, y_pred, target_names=le.classes_))
 
     dump((clf, le), MODEL_PATH)
     print(f"Model saved to {MODEL_PATH}")
