@@ -27,4 +27,25 @@ def load_data():
 
     return np.array(x), np.array(y)
 
+def train_model():
+    print("Training voice command model...")
 
+    x, y = load_data()
+
+    le = LabelEncoder()
+    y_encoded = le.fit_transform(y)
+
+    X_train, X_test, y_train, y_test = train_test_split(x, y_encoded,test_size=0.2)
+
+    clf = SVC(kernel="linear", probability=True )
+    clf.fit(X_train,y_train)
+
+    y_pred = clf.predict(X_test)
+    acc = accuracy_score(y_test, y_pred)
+
+    print(f"Model trained with accuracy: {acc:.2f}")
+
+    dump((clf, le), MODEL_PATH)
+    print(f"Model saved to {MODEL_PATH}")
+
+train_model()
